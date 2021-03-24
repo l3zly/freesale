@@ -5,6 +5,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: true,
     required: [true, 'Phone number required'],
+    validate: {
+      validator: (v) => /^\+[1-9]\d{1,14}$/.test(v),
+      message: (props) => `${props.value} is not an international phone number`,
+    },
   },
   password: {
     type: String,
