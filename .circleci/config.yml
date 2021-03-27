@@ -3,7 +3,6 @@ jobs:
   build:
     docker:
       - image: mongo:latest
-        port: 27017:27017
 orbs:
   node: circleci/node@3.0.0
 workflows:
