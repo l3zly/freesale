@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: mongo:latest
+      - image: circleci/mongo:latest
 orbs:
   node: circleci/node@3.0.0
 workflows:
