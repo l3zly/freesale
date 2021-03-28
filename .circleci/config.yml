@@ -1,8 +1,7 @@
 version: 2.1
-build:
-  docker:
-    - image: circleci/mongo:latest
-  steps:
+docker:
+  - image: circleci/mongo:latest
+steps:
     - checkout
     - run:
         name: install-dockerize
