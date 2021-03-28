@@ -1,6 +1,10 @@
 const db = require('../db');
 const userDal = require('./user-dal');
 
+const phone = '+442071838750';
+const password = 'password';
+const user = { phone, password };
+
 beforeAll(async () => {
   await db.connect();
 });
@@ -12,12 +16,11 @@ afterAll(async () => {
 
 describe('UserDal', () => {
   describe('save', () => {
-    test('result has _id', async () => {
-      const result = await userDal.save({
-        phone: '+442071838750',
-        password: 'password',
-      });
+    it('returns user with _id', async () => {
+      const result = await userDal.save(user);
 
+      expect(result.phone).toEqual(phone);
+      expect(result.password).toEqual(password);
       expect(result._id).toBeTruthy();
     });
   });
