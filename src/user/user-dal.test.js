@@ -12,13 +12,13 @@ afterAll(async () => {
 
 describe('user-dal', () => {
   describe('save', () => {
-    test('result has id', async () => {
+    test('result has _id', async () => {
       const result = await save({
         phone: '+442071838750',
         password: 'password',
       });
 
-      expect(result.id).toBeTruthy();
+      expect(result._id).toBeTruthy();
     });
   });
 });
