@@ -10,8 +10,11 @@ jobs:
           name: Installing dependencies
           command: npm install
       - run:
-          name: Running tests
+          name: Running Jest tests
           command: npm test
+      - run:
+          name: Running Cucumber tests
+          command: npm run cucumber
 workflows:
   run-build:
     jobs:
