@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "test": "jest",
+    "cucumber": "cucumber-js src/test/features --require src/test/steps --tags 'not @wip'",
     "format": "npx prettier --write ."
   },
   "repository": {
