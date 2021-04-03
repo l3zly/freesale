@@ -1,5 +1,5 @@
-const express = require('express');
+const userApi = require('./user-api');
 
-const router = express.Router();
-
-module.exports = router;
+module.exports = {
+  userApi,
+};
