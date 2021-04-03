@@ -8,7 +8,7 @@ describe('password', () => {
       result = await encode('password');
     });
 
-    it('returns <key>.<salt>', async () => {
+    it('returns key and salt', async () => {
       expect(result.split('.')).toHaveLength(2);
     });
 
