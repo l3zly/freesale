@@ -4,7 +4,7 @@ const assert = require('assert').strict;
 const app = require('../../app');
 
 Given(
-  'I provide {} and {} as my phone number and password',
+  'I provide {string} and {string} as my phone number and password',
   function (phone, password) {
     this.context.phone = phone;
     this.context.password = password;

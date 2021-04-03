@@ -6,7 +6,7 @@ Feature: User component
     Then the response status is <status>
 
     Examples:
-      | phone         | password | status |
-      | +442071838750 | 12345678 | 201    |
-      | 02071838750   | password | 400    |
-      | +442071838750 | 1234567  | 400    |
+      | phone           | password   | status |
+      | '+442071838750' | '12345678' | 201    |
+      | '02071838750'   | 'password' | 400    |
+      | '+442071838750' | '1234567'  | 400    |
