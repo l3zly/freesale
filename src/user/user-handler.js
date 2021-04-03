@@ -5,7 +5,6 @@ const { BadRequestError } = require('../errors');
 async function signup({ body }) {
   try {
     await userSchema.validateAsync(body, { abortEarly: false });
-    return await save(body);
   } catch (e) {
     const errors = e.details.map(({ message, path }) => {
       return { message, path };
@@ -13,6 +12,8 @@ async function signup({ body }) {
 
     throw new BadRequestError(errors);
   }
+
+  return await save(body);
 }
 
 module.exports = {
