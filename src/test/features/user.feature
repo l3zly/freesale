@@ -1,4 +1,3 @@
-@wip
 Feature: User component
   Scenario Outline: signup
     Given I provide <phone> and <password> as my phone number and password
