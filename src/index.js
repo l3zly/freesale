@@ -1,7 +1,6 @@
+const { port } = require('./config');
 const db = require('./db');
 const app = require('./app');
-
-const port = 3000;
 
 async function start() {
   await db.connect();
