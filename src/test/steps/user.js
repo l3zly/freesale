@@ -12,9 +12,10 @@ Given(
 );
 
 Given(
-  'a user with the provided phone number already exists',
+  'a user with the provided phone number and password exists',
   async function () {
-    await signup(this.context.phone, 'password');
+    const { phone, password } = this.context;
+    await signup(phone, password);
   }
 );
 

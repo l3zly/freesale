@@ -12,6 +12,6 @@ Feature: User component
 
   Scenario: signup with non-unique phone number
     Given I provide '+442071838750' and '12345678' as my phone number and password
-    And a user with the provided phone number already exists
+    And a user with the provided phone number and password exists
     When I try to signup
     Then the response status is 400
