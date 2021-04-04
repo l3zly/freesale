@@ -7,10 +7,14 @@ async function save(user) {
 }
 
 async function findByPhone(phone, includePassword = false) {
+  const projection = {
+    phone: true,
+    password: includePassword,
+  };
   return await client
     .db()
     .collection('users')
-    .findOne({ phone }, { projection: { password: includePassword } });
+    .findOne({ phone }, { projection });
 }
 
 module.exports = {
