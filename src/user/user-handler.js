@@ -1,5 +1,5 @@
 const userSchema = require('./user-schema');
-const { save, findByPhone } = require('./user-dal');
+const { save, findByPhone, getPassword } = require('./user-dal');
 const { BadRequestError, NotFoundError } = require('../errors');
 const { passwordService, tokenService } = require('../services');
 
@@ -36,21 +36,21 @@ async function checkPhoneIsUnique(phone) {
 }
 
 async function login({ body }) {
-  const { phone, password } = body;
+  const { phone, password: rawPassword } = body;
 
-  const user = await findByPhone(phone, true);
+  const encodedPassword = await getPassword(phone);
 
-  if (!user) {
+  if (!encodedPassword) {
     throw new NotFoundError('User');
   }
 
-  const passwordsMatch = await passwordService.matches(user.password, password);
+  const match = await passwordService.matches(encodedPassword, rawPassword);
 
-  if (!passwordsMatch) {
+  if (!match) {
     throw new NotFoundError('User');
   }
 
-  delete user.password;
+  const user = await findByPhone(phone);
   const token = await tokenService.generateToken(user);
   return { user, token };
 }
