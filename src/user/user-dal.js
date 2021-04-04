@@ -6,6 +6,14 @@ async function save(user) {
   return result.ops[0];
 }
 
+async function findByPhone(phone) {
+  return await client
+    .db()
+    .collection('users')
+    .findOne({ phone }, { projection: { password: 0 } });
+}
+
 module.exports = {
   save,
+  findByPhone,
 };
