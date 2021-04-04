@@ -1,6 +1,6 @@
-const { encode, matches } = require('./password');
+const { encode, matches } = require('./password-service');
 
-describe('password', () => {
+describe('passwordService', () => {
   describe('encode', () => {
     let result;
 

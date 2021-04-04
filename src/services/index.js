@@ -1,7 +1,7 @@
-const password = require('./password');
-const token = require('./token');
+const passwordService = require('./password-service');
+const tokenService = require('./token-service');
 
 module.exports = {
-  password,
-  token,
+  passwordService,
+  tokenService,
 };

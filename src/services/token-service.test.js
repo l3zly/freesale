@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
-const { generateToken } = require('./token');
+const { generateToken } = require('./token-service');
 
 process.env.TOKEN_SECRET = 'shhhhh';
 
-describe('token', () => {
+describe('tokenService', () => {
   describe('generateToken', () => {
     it('generates a jwt', async () => {
       const payload = { foo: 'bar' };

@@ -1,12 +1,12 @@
 const userSchema = require('./user-schema');
 const { save, findByPhone } = require('./user-dal');
 const { BadRequestError } = require('../errors');
-const { password } = require('../services');
+const { passwordService } = require('../services');
 
 async function signup({ body }) {
   await validateUser(body);
   await checkPhoneIsUnique(body.phone);
-  body.password = await password.encode(body.password);
+  body.password = await passwordService.encode(body.password);
   return await save(body);
 }
 
