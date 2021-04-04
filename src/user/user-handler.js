@@ -1,13 +1,15 @@
 const userSchema = require('./user-schema');
 const { save, findByPhone } = require('./user-dal');
 const { BadRequestError } = require('../errors');
-const { passwordService } = require('../services');
+const { passwordService, tokenService } = require('../services');
 
 async function signup({ body }) {
   await validateUser(body);
   await checkPhoneIsUnique(body.phone);
   body.password = await passwordService.encode(body.password);
-  return await save(body);
+  const user = await save(body);
+  const token = await tokenService.generateToken(user);
+  return { user, token };
 }
 
 async function validateUser(user) {
