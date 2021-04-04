@@ -1,24 +1,23 @@
 const express = require('express');
+const { wrap } = require('../middleware');
 const { signup, login } = require('./user-handler');
 
 const router = express.Router();
 
-router.post('/', async (req, res, next) => {
-  try {
+router.post(
+  '/',
+  wrap(async (req, res) => {
     const { user, token } = await signup({ body: req.body });
     res.status(201).header('Authorization', `Bearer ${token}`).json(user);
-  } catch (e) {
-    next(e);
-  }
-});
+  })
+);
 
-router.post('/login', async (req, res, next) => {
-  try {
+router.post(
+  '/login',
+  wrap(async (req, res) => {
     const { user, token } = await login({ body: req.body });
     res.status(200).header('Authorization', `Bearer ${token}`).json(user);
-  } catch (e) {
-    next(e);
-  }
-});
+  })
+);
 
 module.exports = router;
