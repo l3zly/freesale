@@ -10,7 +10,7 @@ Feature: User component
       | '02071838750'   | '12345678' | 400    |
       | '+442071838750' | '1234567'  | 400    |
 
-  Scenario: signup with non-unique phone
+  Scenario: signup with non-unique phone number
     Given I provide '+442071838750' and '12345678' as my phone number and password
     And a user with the provided phone number already exists
     When I try to signup
