@@ -4,15 +4,7 @@ const { BadRequestError } = require('../errors');
 const { password } = require('../services');
 
 async function signup({ body }) {
-  try {
-    await userSchema.validateAsync(body, { abortEarly: false });
-  } catch (e) {
-    const errors = e.details.map(({ message, path }) => {
-      return { message, path };
-    });
-
-    throw new BadRequestError(errors);
-  }
+  await validateUser(body);
 
   if (await findByPhone(body.phone)) {
     const errors = [
@@ -28,6 +20,17 @@ async function signup({ body }) {
   body.password = await password.encode(body.password);
 
   return await save(body);
+}
+
+async function validateUser(user) {
+  try {
+    await userSchema.validateAsync(user, { abortEarly: false });
+  } catch (e) {
+    const errors = e.details.map(({ message, path }) => {
+      return { message, path };
+    });
+    throw new BadRequestError(errors);
+  }
 }
 
 module.exports = {
