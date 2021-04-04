@@ -11,10 +11,17 @@ Given(
   }
 );
 
+Given(
+  'a user with the provided phone number already exists',
+  async function () {
+    await signup(this.context.phone, 'password');
+  }
+);
+
 When('I try to signup', async function () {
   const { phone, password } = this.context;
 
-  const response = await request(app).post('/users').send({ phone, password });
+  const response = await signup(phone, password);
 
   this.context.status = response.status;
 });
@@ -22,3 +29,7 @@ When('I try to signup', async function () {
 Then('the response status is {int}', function (status) {
   assert.equal(this.context.status, status);
 });
+
+async function signup(phone, password) {
+  return await request(app).post('/users').send({ phone, password });
+}
