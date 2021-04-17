@@ -1,6 +1,8 @@
+const { UnauthorizedError } = require('../errors');
+
 function auth(req, res, next) {
   if (!req.user) {
-    throw new Error('Not authenticated');
+    throw new UnauthorizedError();
   }
 
   next();
