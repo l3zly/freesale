@@ -20,6 +20,9 @@ async function getPassword(phone) {
     .db()
     .collection(collection)
     .findOne({ phone }, { projection: { password: 1 } });
+  if (!user) {
+    return null;
+  }
   return user.password;
 }
 
