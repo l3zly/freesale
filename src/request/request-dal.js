@@ -8,7 +8,7 @@ async function save(request) {
 }
 
 async function find() {
-  return await client.db().collection(collection).find();
+  return await client.db().collection(collection).find().toArray();
 }
 
 module.exports = {
