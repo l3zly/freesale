@@ -26,3 +26,15 @@ Feature: User component
     And a user with the provided phone number and password exists
     When I try to signup
     Then the response status is 400
+
+  Scenario Outline: login
+    Given a user with the phone number '+442071838750' and password '12345678' exists
+    And I provide <phone> and <password> as my phone number and password
+    When I try to login
+    Then the response status is <status>
+
+    Examples:
+      | phone           | password   | status |
+      | '+442071838750' | '12345678' | 200    |
+      | '+551155256325' | '12345678' | 404    |
+      | '+442071838750' | '1234'     | 404    |

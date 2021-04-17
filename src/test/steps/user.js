@@ -19,10 +19,27 @@ Given(
   }
 );
 
+Given(
+  'a user with the phone number {string} and password {string} exists',
+  async function (phone, password) {
+    await signup(phone, password);
+  }
+);
+
 When('I try to signup', async function () {
   const { phone, password } = this.context;
 
   const response = await signup(phone, password);
+
+  this.context.status = response.status;
+});
+
+When('I try to login', async function () {
+  const { phone, password } = this.context;
+
+  const response = await request(app)
+    .post('/users/login')
+    .send({ phone, password });
 
   this.context.status = response.status;
 });
