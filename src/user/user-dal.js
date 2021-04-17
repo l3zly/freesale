@@ -1,7 +1,9 @@
 const { client } = require('../db');
 
+const collection = 'users';
+
 async function save(user) {
-  const result = await client.db().collection('users').insertOne(user);
+  const result = await client.db().collection(collection).insertOne(user);
   delete result.ops[0].password;
   return result.ops[0];
 }
@@ -9,14 +11,14 @@ async function save(user) {
 async function findByPhone(phone) {
   return await client
     .db()
-    .collection('users')
+    .collection(collection)
     .findOne({ phone }, { projection: { password: 0 } });
 }
 
 async function getPassword(phone) {
   const user = await client
     .db()
-    .collection('users')
+    .collection(collection)
     .findOne({ phone }, { projection: { password: 1 } });
   return user.password;
 }
