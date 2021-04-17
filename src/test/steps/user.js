@@ -19,7 +19,7 @@ Given(
   }
 );
 
-When('signup', async function () {
+When('I try to signup', async function () {
   const { phone, password } = this.context;
 
   const response = await signup(phone, password);
