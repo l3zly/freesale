@@ -18,7 +18,7 @@ router.post(
 router.get(
   '/',
   wrap(async (req, res) => {
-    const requests = await getRequests({ body: req.body });
+    const requests = await getRequests();
     res.status(200).json(requests);
   })
 );
