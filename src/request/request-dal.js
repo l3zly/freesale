@@ -1,3 +1,4 @@
+const { ObjectID } = require('mongodb');
 const { client } = require('../db');
 
 const collection = 'requests';
@@ -11,7 +12,15 @@ async function find() {
   return await client.db().collection(collection).find().toArray();
 }
 
+async function findById(id) {
+  return await client
+    .db()
+    .collection(collection)
+    .findOne({ _id: ObjectID.createFromHexString(id) });
+}
+
 module.exports = {
   save,
   find,
+  findById,
 };
