@@ -1,5 +1,5 @@
 const requestSchema = require('./request-schema');
-const { save, find, findById, update } = require('./request-dal');
+const { save, find, findById, updateById } = require('./request-dal');
 const { validateBody } = require('../util');
 const { NotFoundError } = require('../errors');
 
@@ -22,7 +22,7 @@ async function linkOfferToRequest(requestId, offerId) {
   }
   const { offerIds } = request;
   offerIds.push(offerId);
-  await update(requestId, { offerIds });
+  await updateById(requestId, { offerIds });
 }
 
 module.exports = {

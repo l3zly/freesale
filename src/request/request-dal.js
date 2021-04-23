@@ -19,7 +19,7 @@ async function findById(id) {
     .findOne({ _id: ObjectID.createFromHexString(id) });
 }
 
-async function update(id, updates) {
+async function updateById(id, updates) {
   await client
     .db()
     .collection(collection)
@@ -30,5 +30,5 @@ module.exports = {
   save,
   find,
   findById,
-  update,
+  updateById,
 };
