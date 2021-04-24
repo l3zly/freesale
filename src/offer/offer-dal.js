@@ -11,6 +11,9 @@ async function save(offer) {
 }
 
 async function deleteById(id) {
+  if (!ObjectID.isValid(id)) {
+    return;
+  }
   await client
     .db()
     .collection(collection)
