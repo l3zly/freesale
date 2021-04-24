@@ -13,6 +13,9 @@ async function find() {
 }
 
 async function findById(id) {
+  if (!ObjectID.isValid(id)) {
+    return null;
+  }
   return await client
     .db()
     .collection(collection)
@@ -20,6 +23,9 @@ async function findById(id) {
 }
 
 async function updateById(id, updates) {
+  if (!ObjectID.isValid(id)) {
+    return null;
+  }
   await client
     .db()
     .collection(collection)
