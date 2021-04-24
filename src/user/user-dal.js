@@ -4,6 +4,8 @@ const collection = 'users';
 
 async function save(user) {
   const result = await client.db().collection(collection).insertOne(user);
+  result.ops[0].id = result.ops[0]._id.toHexString();
+  delete result.ops[0]._id;
   delete result.ops[0].password;
   return result.ops[0];
 }

@@ -5,7 +5,7 @@ const { NotFoundError } = require('../errors');
 
 async function makeRequest({ body, user }) {
   body.offerIds = [];
-  body.userId = user._id;
+  body.userId = user.id;
   await validateBody(requestSchema, body);
   const request = await save(body);
   return request;

@@ -5,6 +5,8 @@ const collection = 'requests';
 
 async function save(request) {
   const result = await client.db().collection(collection).insertOne(request);
+  result.ops[0].id = result.ops[0]._id.toHexString();
+  delete result.ops[0]._id;
   return result.ops[0];
 }
 
