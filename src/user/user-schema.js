@@ -5,6 +5,7 @@ const userSchema = Joi.object({
     .pattern(/^\+[1-9]\d{1,14}$/)
     .required(),
   password: Joi.string().min(8).required(),
+  postcode: Joi.string().required(),
 });
 
 module.exports = userSchema;
