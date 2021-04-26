@@ -1,10 +1,11 @@
 const userSchema = require('./user-schema');
 const { save, findByPhone, getPassword } = require('./user-dal');
 const { BadRequestError, NotFoundError } = require('../errors');
-const { passwordService, tokenService } = require('../services');
+const { passwordService, tokenService, geoService } = require('../services');
 const { validateBody } = require('../util');
 
 async function signup({ body }) {
+  body.coords = await geoService.getCoords(body.postcode);
   await validateBody(userSchema, body);
   await checkPhoneIsUnique(body.phone);
   body.password = await passwordService.encode(body.password);
