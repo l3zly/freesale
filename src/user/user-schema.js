@@ -6,6 +6,10 @@ const userSchema = Joi.object({
     .required(),
   password: Joi.string().min(8).required(),
   postcode: Joi.string().required(),
+  coords: Joi.object({
+    lon: Joi.number().required(),
+    lat: Joi.number().required(),
+  }).required(),
 });
 
 module.exports = userSchema;
