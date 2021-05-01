@@ -20,13 +20,10 @@ Given(
   }
 );
 
-Given(
-  'a user with the provided phone number and password exists',
-  async function () {
-    const { phone, password } = this.context;
-    await signup(phone, 'LN7 6DH', password);
-  }
-);
+Given('a user with the provided phone number exists', async function () {
+  const { phone } = this.context;
+  await signup(phone, 'LN7 6DH', '12345678');
+});
 
 Given(
   'a user with the phone number {string} and password {string} exists',
