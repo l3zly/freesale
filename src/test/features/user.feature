@@ -4,7 +4,7 @@ Feature: User component
     When I try to signup
     Then the response status is 201
 
-  Scenario Outline: signup without E.164 phone number
+  Scenario Outline: signup without UK E.164 phone number
     Given I provide <phone> and '12345678' as my phone number and password
     When I try to signup
     Then the response status is 400
