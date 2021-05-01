@@ -1,5 +1,5 @@
 Feature: User component
-  Scenario: signup with E.164 phone number and 8 character password
+  Scenario: signup with UK E.164 phone number and 8 character password
     Given I provide '+442071838750' and '12345678' as my phone number and password
     When I try to signup
     Then the response status is 201
