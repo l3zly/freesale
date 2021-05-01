@@ -5,6 +5,10 @@ const { passwordService, tokenService, geoService } = require('../services');
 const { validateBody } = require('../util');
 
 async function signup({ body }) {
+  if (!body.postcode) {
+    const errors = [{ message: 'Postcode required', path: ['postcode'] }];
+    throw new BadRequestError(errors);
+  }
   body.coords = await geoService.getCoords(body.postcode);
   await validateBody(userSchema, body);
   await checkPhoneIsUnique(body.phone);
