@@ -16,6 +16,17 @@ Feature: User component
       | '+4420718387513267' |
       | ''                  |
 
+  Scenario Outline: signup without UK postcode
+    Given I provide '+442071838750', <postcode> and '12345678' as my phone number, postcode and password
+    When I try to signup
+    Then the response status is 400
+
+    Examples:
+      | postcode |
+      | 'LN76DH' |
+      | '07731'  |
+      | ''       |
+
   Scenario: signup with password shorter than 8 characters
     Given I provide '+442071838750', 'LN7 6DH' and '1234567' as my phone number, postcode and password
     When I try to signup
