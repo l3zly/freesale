@@ -10,6 +10,16 @@ async function save(offer) {
   return result.ops[0];
 }
 
+async function findById(id) {
+  if (!ObjectID.isValid(id)) {
+    return null;
+  }
+  return await client
+    .db()
+    .collection(collection)
+    .findOne({ _id: ObjectID.createFromHexString(id) });
+}
+
 async function updateById(id, updates) {
   if (!ObjectID.isValid(id)) {
     return null;
@@ -32,6 +42,7 @@ async function deleteById(id) {
 
 module.exports = {
   save,
+  findById,
   updateById,
   deleteById,
 };
