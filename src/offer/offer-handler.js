@@ -1,7 +1,8 @@
 const offerSchema = require('./offer-schema');
 const { validateBody } = require('../util');
-const { save, deleteById } = require('./offer-dal');
+const { save, findById, updateById, deleteById } = require('./offer-dal');
 const { requestHandler } = require('../request');
+const { NotFoundError } = require('../errors');
 
 async function makeOffer({ body, user }) {
   body.status = 'pending';
@@ -20,6 +21,15 @@ async function makeOffer({ body, user }) {
   return offer;
 }
 
+async function linkImagesToOffer(offerId, imageIds) {
+  const offer = await findById(offerId);
+  if (!offer) {
+    throw new NotFoundError('Offer');
+  }
+  await updateById(offerId, { imageIds: offer.imageIds.concat(imageIds) });
+}
+
 module.exports = {
   makeOffer,
+  linkImagesToOffer,
 };
