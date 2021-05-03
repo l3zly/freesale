@@ -10,6 +10,16 @@ async function save(offer) {
   return result.ops[0];
 }
 
+async function updateById(id, updates) {
+  if (!ObjectID.isValid(id)) {
+    return null;
+  }
+  await client
+    .db()
+    .collection(collection)
+    .updateOne({ _id: ObjectID.createFromHexString(id) }, { $set: updates });
+}
+
 async function deleteById(id) {
   if (!ObjectID.isValid(id)) {
     return;
@@ -22,5 +32,6 @@ async function deleteById(id) {
 
 module.exports = {
   save,
+  updateById,
   deleteById,
 };
