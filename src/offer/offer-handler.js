@@ -5,6 +5,7 @@ const { requestHandler } = require('../request');
 
 async function makeOffer({ body, user }) {
   body.status = 'pending';
+  body.imageIds = [];
   body.userId = user.id;
   await validateBody(offerSchema, body);
   const offer = await save(body);
