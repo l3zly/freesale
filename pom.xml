@@ -12,7 +12,7 @@
     <artifactId>freesale</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>freesale</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Freesale backend built on Spring Boot</description>
     <properties>
         <java.version>11</java.version>
     </properties>
