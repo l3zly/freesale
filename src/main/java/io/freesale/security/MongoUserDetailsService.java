@@ -15,9 +15,9 @@ public class MongoUserDetailsService implements ReactiveUserDetailsService {
     }
 
     @Override
-    public Mono<UserDetails> findByUsername(String phone) {
+    public Mono<UserDetails> findByUsername(String id) {
         return userRepository
-                .findUserByPhone(phone)
+                .findById(id)
                 .switchIfEmpty(Mono.error(new UsernameNotFoundException("User not found")))
                 .map(SecurityUser::new);
     }
