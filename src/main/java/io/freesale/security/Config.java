@@ -2,6 +2,7 @@ package io.freesale.security;
 
 import io.freesale.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
@@ -32,6 +33,8 @@ public class Config {
                 .logout()
                 .disable()
                 .authorizeExchange()
+                .pathMatchers(HttpMethod.POST, "/users")
+                .permitAll()
                 .anyExchange()
                 .authenticated()
                 .and()
