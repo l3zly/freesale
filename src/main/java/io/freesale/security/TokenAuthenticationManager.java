@@ -23,8 +23,10 @@ public class TokenAuthenticationManager implements ReactiveAuthenticationManager
     public Mono<Authentication> authenticate(Authentication authentication) {
         var token = authentication.getCredentials().toString();
         return Mono
-                .just(tokenUtil.verify(token))
+                .just(token)
+                .map(tokenUtil::verify)
                 .flatMap(claims -> userDetailsService.findByUsername(claims.getSubject()))
+                .onErrorMap(InvalidTokenException::new)
                 .map(securityUser -> new UsernamePasswordAuthenticationToken(securityUser, token,
                         Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))));
     }
