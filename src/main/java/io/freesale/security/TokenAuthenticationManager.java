@@ -3,11 +3,8 @@ package io.freesale.security;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import reactor.core.publisher.Mono;
-
-import java.util.Collections;
 
 public class TokenAuthenticationManager implements ReactiveAuthenticationManager {
 
@@ -28,7 +25,7 @@ public class TokenAuthenticationManager implements ReactiveAuthenticationManager
                 .flatMap(claims -> userDetailsService.findByUsername(claims.getSubject()))
                 .onErrorResume(e -> Mono.empty())
                 .map(securityUser -> new UsernamePasswordAuthenticationToken(securityUser, token,
-                        Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))));
+                        securityUser.getAuthorities()));
     }
 
 }
