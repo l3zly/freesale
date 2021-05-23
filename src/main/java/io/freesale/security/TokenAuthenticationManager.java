@@ -26,7 +26,7 @@ public class TokenAuthenticationManager implements ReactiveAuthenticationManager
                 .just(token)
                 .map(tokenUtil::verify)
                 .flatMap(claims -> userDetailsService.findByUsername(claims.getSubject()))
-                .onErrorMap(InvalidTokenException::new)
+                .onErrorResume(e -> Mono.empty())
                 .map(securityUser -> new UsernamePasswordAuthenticationToken(securityUser, token,
                         Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))));
     }
