@@ -4,30 +4,29 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Component;
-
 import java.security.KeyPair;
+import org.springframework.stereotype.Component;
 
 @Component
 public class TokenUtil {
 
-    private final KeyPair keyPair = Keys.keyPairFor(SignatureAlgorithm.RS256);
+  private final KeyPair keyPair = Keys.keyPairFor(SignatureAlgorithm.RS256);
 
-    public String generateToken(String subject) {
-        return Jwts
-                .builder()
-                .setSubject(subject)
-                .signWith(keyPair.getPrivate())
-                .compact();
-    }
+  public String generateToken(String subject) {
+    return Jwts
+        .builder()
+        .setSubject(subject)
+        .signWith(keyPair.getPrivate())
+        .compact();
+  }
 
-    public Claims verify(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(keyPair.getPublic())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
+  public Claims verify(String token) {
+    return Jwts
+        .parserBuilder()
+        .setSigningKey(keyPair.getPublic())
+        .build()
+        .parseClaimsJws(token)
+        .getBody();
+  }
 
 }

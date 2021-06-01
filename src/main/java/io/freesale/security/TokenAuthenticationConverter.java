@@ -9,14 +9,15 @@ import reactor.core.publisher.Mono;
 
 public class TokenAuthenticationConverter implements ServerAuthenticationConverter {
 
-    @Override
-    public Mono<Authentication> convert(ServerWebExchange serverWebExchange) {
-        return Mono
-                .just(serverWebExchange.getRequest().getHeaders().getOrEmpty(HttpHeaders.AUTHORIZATION))
-                .filter(authorizations -> !authorizations.isEmpty())
-                .map(authorizations -> authorizations.get(0).split(" "))
-                .filter(tokenTypeAndToken -> tokenTypeAndToken.length == 2)
-                .map(tokenTypeAndToken -> new PreAuthenticatedAuthenticationToken(null, tokenTypeAndToken[1]));
-    }
+  @Override
+  public Mono<Authentication> convert(ServerWebExchange serverWebExchange) {
+    return Mono
+        .just(serverWebExchange.getRequest().getHeaders().getOrEmpty(HttpHeaders.AUTHORIZATION))
+        .filter(authorizations -> !authorizations.isEmpty())
+        .map(authorizations -> authorizations.get(0).split(" "))
+        .filter(tokenTypeAndToken -> tokenTypeAndToken.length == 2)
+        .map(tokenTypeAndToken -> new PreAuthenticatedAuthenticationToken(null,
+            tokenTypeAndToken[1]));
+  }
 
 }

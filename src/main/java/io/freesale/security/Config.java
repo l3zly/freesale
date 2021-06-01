@@ -17,50 +17,50 @@ import org.springframework.security.web.server.authentication.ServerAuthenticati
 @EnableWebFluxSecurity
 public class Config {
 
-    @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http,
-                                                         ReactiveAuthenticationManager authenticationManager,
-                                                         ServerAuthenticationConverter serverAuthenticationConverter) {
-        var authenticationWebFilter = new AuthenticationWebFilter(authenticationManager);
-        authenticationWebFilter.setServerAuthenticationConverter(serverAuthenticationConverter);
-        return http
-                .csrf()
-                .disable()
-                .httpBasic()
-                .disable()
-                .formLogin()
-                .disable()
-                .logout()
-                .disable()
-                .authorizeExchange()
-                .pathMatchers(HttpMethod.POST, "/users")
-                .permitAll()
-                .anyExchange()
-                .authenticated()
-                .and()
-                .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
-                .build();
-    }
+  @Bean
+  public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http,
+      ReactiveAuthenticationManager authenticationManager,
+      ServerAuthenticationConverter serverAuthenticationConverter) {
+    var authenticationWebFilter = new AuthenticationWebFilter(authenticationManager);
+    authenticationWebFilter.setServerAuthenticationConverter(serverAuthenticationConverter);
+    return http
+        .csrf()
+        .disable()
+        .httpBasic()
+        .disable()
+        .formLogin()
+        .disable()
+        .logout()
+        .disable()
+        .authorizeExchange()
+        .pathMatchers(HttpMethod.POST, "/users")
+        .permitAll()
+        .anyExchange()
+        .authenticated()
+        .and()
+        .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
+        .build();
+  }
 
-    @Bean
-    public ServerAuthenticationConverter serverAuthenticationConverter() {
-        return new TokenAuthenticationConverter();
-    }
+  @Bean
+  public ServerAuthenticationConverter serverAuthenticationConverter() {
+    return new TokenAuthenticationConverter();
+  }
 
-    @Bean
-    public ReactiveAuthenticationManager authenticationManager(TokenUtil tokenUtil,
-                                                               ReactiveUserDetailsService userDetailsService) {
-        return new TokenAuthenticationManager(tokenUtil, userDetailsService);
-    }
+  @Bean
+  public ReactiveAuthenticationManager authenticationManager(TokenUtil tokenUtil,
+      ReactiveUserDetailsService userDetailsService) {
+    return new TokenAuthenticationManager(tokenUtil, userDetailsService);
+  }
 
-    @Bean
-    public ReactiveUserDetailsService userDetailsService(UserRepository userRepository) {
-        return new MongoUserDetailsService(userRepository);
-    }
+  @Bean
+  public ReactiveUserDetailsService userDetailsService(UserRepository userRepository) {
+    return new MongoUserDetailsService(userRepository);
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
 }

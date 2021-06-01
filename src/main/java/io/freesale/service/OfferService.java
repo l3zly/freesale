@@ -9,16 +9,16 @@ import reactor.core.publisher.Mono;
 @Service
 public class OfferService {
 
-    private final OfferRepository repository;
+  private final OfferRepository repository;
 
-    public OfferService(OfferRepository repository) {
-        this.repository = repository;
-    }
+  public OfferService(OfferRepository repository) {
+    this.repository = repository;
+  }
 
-    public Mono<Offer> makeOffer(Mono<MakeOfferDto> makeOfferDto, String userId) {
-        return makeOfferDto
-                .map(dto -> Offer.of(dto.getAmount(), Offer.Status.PENDING, null, userId))
-                .flatMap(repository::save);
-    }
+  public Mono<Offer> makeOffer(Mono<MakeOfferDto> makeOfferDto, String userId) {
+    return makeOfferDto
+        .map(dto -> Offer.of(dto.getAmount(), Offer.Status.PENDING, null, userId))
+        .flatMap(repository::save);
+  }
 
 }

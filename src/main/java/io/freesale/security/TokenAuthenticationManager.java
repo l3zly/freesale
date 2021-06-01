@@ -8,24 +8,25 @@ import reactor.core.publisher.Mono;
 
 public class TokenAuthenticationManager implements ReactiveAuthenticationManager {
 
-    private final TokenUtil tokenUtil;
-    private final ReactiveUserDetailsService userDetailsService;
+  private final TokenUtil tokenUtil;
+  private final ReactiveUserDetailsService userDetailsService;
 
-    public TokenAuthenticationManager(TokenUtil tokenUtil, ReactiveUserDetailsService userDetailsService) {
-        this.tokenUtil = tokenUtil;
-        this.userDetailsService = userDetailsService;
-    }
+  public TokenAuthenticationManager(TokenUtil tokenUtil,
+      ReactiveUserDetailsService userDetailsService) {
+    this.tokenUtil = tokenUtil;
+    this.userDetailsService = userDetailsService;
+  }
 
-    @Override
-    public Mono<Authentication> authenticate(Authentication authentication) {
-        var token = authentication.getCredentials().toString();
-        return Mono
-                .just(token)
-                .map(tokenUtil::verify)
-                .flatMap(claims -> userDetailsService.findByUsername(claims.getSubject()))
-                .onErrorMap(InvalidTokenException::new)
-                .map(securityUser -> new UsernamePasswordAuthenticationToken(securityUser, token,
-                        securityUser.getAuthorities()));
-    }
+  @Override
+  public Mono<Authentication> authenticate(Authentication authentication) {
+    var token = authentication.getCredentials().toString();
+    return Mono
+        .just(token)
+        .map(tokenUtil::verify)
+        .flatMap(claims -> userDetailsService.findByUsername(claims.getSubject()))
+        .onErrorMap(InvalidTokenException::new)
+        .map(securityUser -> new UsernamePasswordAuthenticationToken(securityUser, token,
+            securityUser.getAuthorities()));
+  }
 
 }
