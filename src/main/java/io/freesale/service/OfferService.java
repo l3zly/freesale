@@ -10,20 +10,20 @@ import reactor.core.publisher.Mono;
 @Service
 public class OfferService {
 
-  private final OfferRepository repository;
+  private final OfferRepository offerRepository;
 
-  public OfferService(OfferRepository repository) {
-    this.repository = repository;
+  public OfferService(OfferRepository offerRepository) {
+    this.offerRepository = offerRepository;
   }
 
   public Mono<Offer> makeOffer(Mono<MakeOfferDto> makeOfferDto, String userId) {
     return makeOfferDto
         .map(dto -> Offer.of(dto.getAmount(), Offer.Status.PENDING, null, userId))
-        .flatMap(repository::save);
+        .flatMap(offerRepository::save);
   }
 
   public Flux<Offer> findOpenOffers() {
-    return repository.findByRequestIdIsNull();
+    return offerRepository.findByRequestIdIsNull();
   }
 
 }
