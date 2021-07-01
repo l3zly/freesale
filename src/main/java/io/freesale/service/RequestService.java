@@ -10,16 +10,16 @@ import reactor.core.publisher.Mono;
 @Service
 public class RequestService {
 
-  private final RequestRepository repository;
+  private final RequestRepository requestRepository;
 
-  public RequestService(RequestRepository repository) {
-    this.repository = repository;
+  public RequestService(RequestRepository requestRepository) {
+    this.requestRepository = requestRepository;
   }
 
   public Mono<Request> makeRequest(Mono<MakeRequestDto> makeRequestDto, String userId) {
     return makeRequestDto
         .map(dto -> Request.of(dto.getTitle(), Collections.emptyList(), userId))
-        .flatMap(repository::save);
+        .flatMap(requestRepository::save);
   }
 
 }
