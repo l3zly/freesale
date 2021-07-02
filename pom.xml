@@ -51,6 +51,12 @@
       <groupId>software.amazon.awssdk</groupId>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <artifactId>lombok</artifactId>
+      <groupId>org.projectlombok</groupId>
+      <scope>provided</scope>
+      <version>1.18.20</version>
+    </dependency>
 
     <dependency>
       <artifactId>spring-boot-starter-test</artifactId>
