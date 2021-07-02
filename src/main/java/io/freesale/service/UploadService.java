@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.multipart.FilePart;
@@ -22,16 +23,13 @@ import software.amazon.awssdk.services.s3.model.CreateMultipartUploadRequest;
 import software.amazon.awssdk.services.s3.model.UploadPartRequest;
 
 @Service
+@RequiredArgsConstructor
 public class UploadService {
 
   private static final String BUCKET = "freesale";
   private static final int MIN_PART_SIZE = 5 * 1024 * 1024;
 
   private final S3AsyncClient s3;
-
-  public UploadService(S3AsyncClient s3) {
-    this.s3 = s3;
-  }
 
   public Flux<String> upload(Flux<Part> parts) {
     return parts.ofType(FilePart.class).flatMap(this::save);

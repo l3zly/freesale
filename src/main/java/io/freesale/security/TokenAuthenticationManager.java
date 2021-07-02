@@ -1,21 +1,17 @@
 package io.freesale.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import reactor.core.publisher.Mono;
 
+@RequiredArgsConstructor
 public class TokenAuthenticationManager implements ReactiveAuthenticationManager {
 
   private final TokenUtil tokenUtil;
   private final ReactiveUserDetailsService userDetailsService;
-
-  public TokenAuthenticationManager(TokenUtil tokenUtil,
-      ReactiveUserDetailsService userDetailsService) {
-    this.tokenUtil = tokenUtil;
-    this.userDetailsService = userDetailsService;
-  }
 
   @Override
   public Mono<Authentication> authenticate(Authentication authentication) {

@@ -1,21 +1,14 @@
 package io.freesale.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Value;
+
+@Value
 public class TokenDto {
 
-  private final String accessToken;
-  private final String tokenType;
-
-  public TokenDto(String accessToken, String tokenType) {
-    this.accessToken = accessToken;
-    this.tokenType = tokenType;
-  }
-
-  public String getAccessToken() {
-    return accessToken;
-  }
-
-  public String getTokenType() {
-    return tokenType;
-  }
+  @JsonProperty("accessToken")
+  String accessToken;
+  @JsonProperty("tokenType")
+  String tokenType;
 
 }

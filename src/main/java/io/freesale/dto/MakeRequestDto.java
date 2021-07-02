@@ -1,17 +1,12 @@
 package io.freesale.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Value;
 
+@Value
 public class MakeRequestDto {
 
-  private final String title;
-
-  public MakeRequestDto(@JsonProperty("title") String title) {
-    this.title = title;
-  }
-
-  public String getTitle() {
-    return title;
-  }
+  @JsonProperty("title")
+  String title;
 
 }

@@ -5,6 +5,7 @@ import io.freesale.dto.TokenDto;
 import io.freesale.dto.UserDto;
 import io.freesale.security.SecurityUser;
 import io.freesale.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +18,10 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
   private final UserService userService;
-
-  public UserController(UserService userService) {
-    this.userService = userService;
-  }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)

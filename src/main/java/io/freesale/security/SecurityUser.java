@@ -3,23 +3,18 @@ package io.freesale.security;
 import io.freesale.model.User;
 import java.util.Collection;
 import java.util.Collections;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+@RequiredArgsConstructor
 public class SecurityUser implements UserDetails {
 
+  @NonNull
+  @Getter
   private final User user;
-
-  public SecurityUser(User user) {
-    if (user == null) {
-      throw new IllegalArgumentException("User can not be null");
-    }
-    this.user = user;
-  }
-
-  public User getUser() {
-    return user;
-  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

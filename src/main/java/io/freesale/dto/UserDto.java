@@ -1,21 +1,14 @@
 package io.freesale.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Value;
+
+@Value
 public class UserDto {
 
-  private final String id;
-  private final String phone;
-
-  public UserDto(String id, String phone) {
-    this.id = id;
-    this.phone = phone;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public String getPhone() {
-    return phone;
-  }
+  @JsonProperty("id")
+  String id;
+  @JsonProperty("phone")
+  String phone;
 
 }

@@ -4,6 +4,7 @@ import io.freesale.dto.MakeRequestDto;
 import io.freesale.model.Request;
 import io.freesale.security.SecurityUser;
 import io.freesale.service.RequestService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,13 +16,10 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/requests")
+@RequiredArgsConstructor
 public class RequestController {
 
   private final RequestService requestService;
-
-  public RequestController(RequestService requestService) {
-    this.requestService = requestService;
-  }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
