@@ -10,16 +10,16 @@ public class Offer {
   private final String id;
   private final String amount;
   private final Status status;
-  private final List<String> imageUrls;
+  private final List<String> images;
   private final String requestId;
   private final String userId;
 
-  public Offer(String id, String amount, Status status, List<String> imageUrls, String requestId,
+  public Offer(String id, String amount, Status status, List<String> images, String requestId,
       String userId) {
     this.id = id;
     this.amount = amount;
     this.status = status;
-    this.imageUrls = imageUrls;
+    this.images = images;
     this.requestId = requestId;
     this.userId = userId;
   }
@@ -40,8 +40,8 @@ public class Offer {
     return status;
   }
 
-  public List<String> getImageUrls() {
-    return imageUrls;
+  public List<String> getImages() {
+    return images;
   }
 
   public String getRequestId() {
