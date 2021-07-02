@@ -1,6 +1,5 @@
 package io.freesale.model;
 
-import java.util.List;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "requests")
@@ -8,18 +7,16 @@ public class Request {
 
   private final String id;
   private final String title;
-  private final List<String> offerIds;
   private final String userId;
 
-  public Request(String id, String title, List<String> offerIds, String userId) {
+  public Request(String id, String title, String userId) {
     this.id = id;
     this.title = title;
-    this.offerIds = offerIds;
     this.userId = userId;
   }
 
-  public static Request of(String title, List<String> offerIds, String userId) {
-    return new Request(null, title, offerIds, userId);
+  public static Request of(String title, String userId) {
+    return new Request(null, title, userId);
   }
 
   public String getId() {
@@ -28,10 +25,6 @@ public class Request {
 
   public String getTitle() {
     return title;
-  }
-
-  public List<String> getOfferIds() {
-    return offerIds;
   }
 
   public String getUserId() {
