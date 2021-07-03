@@ -1,12 +1,19 @@
 package io.freesale.controller;
 
+import io.freesale.dto.ErrorDto;
+import io.freesale.dto.MakeOfferDto;
 import io.freesale.dto.MakeRequestDto;
+import io.freesale.dto.RequestDto;
+import io.freesale.exception.IllegalActionException;
+import io.freesale.exception.RequestNotFoundException;
 import io.freesale.model.Request;
 import io.freesale.security.SecurityUser;
 import io.freesale.service.RequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +34,26 @@ public class RequestController {
       Authentication authentication) {
     return requestService.makeRequest(makeRequestDto,
         ((SecurityUser) authentication.getPrincipal()).getUser().getId());
+  }
+
+  @PostMapping("/{requestId}/offers")
+  @ResponseStatus(HttpStatus.CREATED)
+  public Mono<RequestDto> makeOffer(@PathVariable String requestId,
+      @RequestBody Mono<MakeOfferDto> makeOfferDto, Authentication authentication) {
+    return requestService.makeOffer(requestId, makeOfferDto,
+        ((SecurityUser) authentication.getPrincipal()).getUser().getId());
+  }
+
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  @ExceptionHandler(RequestNotFoundException.class)
+  public ErrorDto handleRequestNotFound(Exception e) {
+    return new ErrorDto(e.getMessage());
+  }
+
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  @ExceptionHandler(IllegalActionException.class)
+  public ErrorDto handleIllegalAction(Exception e) {
+    return new ErrorDto(e.getMessage());
   }
 
 }
