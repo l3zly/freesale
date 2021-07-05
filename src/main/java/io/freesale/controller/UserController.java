@@ -1,13 +1,17 @@
 package io.freesale.controller;
 
 import io.freesale.dto.CreateUserDto;
+import io.freesale.dto.ErrorDto;
+import io.freesale.dto.LoginDto;
 import io.freesale.dto.TokenDto;
 import io.freesale.dto.UserDto;
+import io.freesale.exception.InvalidCredentialsException;
 import io.freesale.security.SecurityUser;
 import io.freesale.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,12 +33,23 @@ public class UserController {
     return userService.signup(createUserDto);
   }
 
+  @PostMapping("/login")
+  public Mono<TokenDto> login(@RequestBody Mono<LoginDto> loginDto) {
+    return userService.login(loginDto);
+  }
+
   @GetMapping("/me")
   public Mono<UserDto> getMe(Mono<Authentication> authentication) {
     return authentication
         .map(auth -> (SecurityUser) auth.getPrincipal())
         .map(securityUser -> new UserDto(securityUser.getUser().getId(),
             securityUser.getUser().getPhone()));
+  }
+
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  @ExceptionHandler(InvalidCredentialsException.class)
+  public ErrorDto handleInvalidCredentials(Exception e) {
+    return new ErrorDto(e.getMessage());
   }
 
 }
