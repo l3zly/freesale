@@ -4,6 +4,7 @@ import io.freesale.dto.MakeOfferDto;
 import io.freesale.dto.MakeRequestDto;
 import io.freesale.dto.RequestDto;
 import io.freesale.exception.IllegalActionException;
+import io.freesale.exception.OfferNotFoundException;
 import io.freesale.exception.RequestNotFoundException;
 import io.freesale.model.Offer;
 import io.freesale.model.Offer.Status;
@@ -59,6 +60,35 @@ public class RequestService {
                 .title(request.getTitle())
                 .offers(offers)
                 .userId(request.getUserId())
+                .build()));
+  }
+
+  public Mono<RequestDto> handleOffer(String requestId, String offerId, boolean accept,
+      String userId) {
+    return requestRepository
+        .findById(requestId)
+        .switchIfEmpty(Mono.error(RequestNotFoundException::new))
+        .handle((request, sink) -> {
+          if (!request.getUserId().equals(userId)) {
+            sink.error(new IllegalActionException("This request belongs to another user"));
+          } else {
+            sink.next(request);
+          }
+        })
+        .cast(Request.class)
+        .flatMap(request -> offerRepository
+            .findByIdAndRequestId(offerId, requestId)
+            .switchIfEmpty(Mono.error(OfferNotFoundException::new))
+            .map(offer -> offer.withStatus(accept ? Status.ACCEPTED : Status.DECLINED))
+            .flatMap(offerRepository::save)
+            .flatMapMany(offer -> offerRepository.findByRequestId(requestId))
+            .collectList()
+            .map(offers -> RequestDto
+                .builder()
+                .id(requestId)
+                .title(request.getTitle())
+                .offers(offers)
+                .userId(userId)
                 .build()));
   }
 
