@@ -6,7 +6,6 @@ import io.freesale.dto.MakeRequestDto;
 import io.freesale.dto.RequestDto;
 import io.freesale.exception.IllegalActionException;
 import io.freesale.exception.RequestNotFoundException;
-import io.freesale.model.Request;
 import io.freesale.security.SecurityUser;
 import io.freesale.service.RequestService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,7 @@ public class RequestController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Mono<Request> makeRequest(@RequestBody Mono<MakeRequestDto> makeRequestDto,
+  public Mono<RequestDto> makeRequest(@RequestBody Mono<MakeRequestDto> makeRequestDto,
       Authentication authentication) {
     return requestService.makeRequest(makeRequestDto,
         ((SecurityUser) authentication.getPrincipal()).getUser().getId());

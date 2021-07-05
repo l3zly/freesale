@@ -10,6 +10,7 @@ import io.freesale.model.Offer.Status;
 import io.freesale.model.Request;
 import io.freesale.repository.OfferRepository;
 import io.freesale.repository.RequestRepository;
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -21,10 +22,17 @@ public class RequestService {
   private final RequestRepository requestRepository;
   private final OfferRepository offerRepository;
 
-  public Mono<Request> makeRequest(Mono<MakeRequestDto> makeRequestDto, String userId) {
+  public Mono<RequestDto> makeRequest(Mono<MakeRequestDto> makeRequestDto, String userId) {
     return makeRequestDto
         .map(dto -> Request.of(dto.getTitle(), userId))
-        .flatMap(requestRepository::save);
+        .flatMap(requestRepository::save)
+        .map(request -> RequestDto
+            .builder()
+            .id(request.getId())
+            .title(request.getTitle())
+            .offers(Collections.emptyList())
+            .userId(request.getUserId())
+            .build());
   }
 
   public Mono<RequestDto> makeOffer(String requestId, Mono<MakeOfferDto> makeOfferDto,
