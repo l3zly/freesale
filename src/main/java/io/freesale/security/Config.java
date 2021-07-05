@@ -33,7 +33,7 @@ public class Config {
         .logout()
         .disable()
         .authorizeExchange()
-        .pathMatchers(HttpMethod.POST, "/users")
+        .pathMatchers(HttpMethod.POST, "/users", "/users/login")
         .permitAll()
         .anyExchange()
         .authenticated()
