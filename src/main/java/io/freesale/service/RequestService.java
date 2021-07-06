@@ -14,6 +14,7 @@ import io.freesale.repository.RequestRepository;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -89,6 +90,21 @@ public class RequestService {
                 .title(request.getTitle())
                 .offers(offers)
                 .userId(userId)
+                .build()));
+  }
+
+  public Flux<RequestDto> getRequests() {
+    return requestRepository
+        .findAll()
+        .flatMap(request -> offerRepository
+            .findByRequestId(request.getId())
+            .collectList()
+            .map(offers -> RequestDto
+                .builder()
+                .id(request.getId())
+                .title(request.getTitle())
+                .offers(offers)
+                .userId(request.getUserId())
                 .build()));
   }
 
