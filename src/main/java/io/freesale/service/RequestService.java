@@ -9,8 +9,10 @@ import io.freesale.exception.RequestNotFoundException;
 import io.freesale.model.Offer;
 import io.freesale.model.Offer.Status;
 import io.freesale.model.Request;
+import io.freesale.model.Transaction;
 import io.freesale.repository.OfferRepository;
 import io.freesale.repository.RequestRepository;
+import io.freesale.repository.TransactionRepository;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ public class RequestService {
 
   private final RequestRepository requestRepository;
   private final OfferRepository offerRepository;
+  private final TransactionRepository transactionRepository;
 
   public Mono<RequestDto> makeRequest(Mono<MakeRequestDto> makeRequestDto, String userId) {
     return makeRequestDto
@@ -90,7 +93,14 @@ public class RequestService {
                 .title(request.getTitle())
                 .offers(offers)
                 .userId(userId)
-                .build()));
+                .build()))
+        .doOnSuccess(requestDto -> {
+          if (accept) {
+            transactionRepository
+                .save(Transaction.of(requestId, offerId))
+                .subscribe();
+          }
+        });
   }
 
   public Flux<RequestDto> getRequests() {
