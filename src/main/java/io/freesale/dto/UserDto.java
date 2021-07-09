@@ -10,5 +10,7 @@ public class UserDto {
   String id;
   @JsonProperty("phone")
   String phone;
+  @JsonProperty("balance")
+  String balance;
 
 }

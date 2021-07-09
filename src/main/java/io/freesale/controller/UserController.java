@@ -7,6 +7,7 @@ import io.freesale.dto.TokenDto;
 import io.freesale.dto.UserDto;
 import io.freesale.exception.InvalidCredentialsException;
 import io.freesale.security.SecurityUser;
+import io.freesale.service.BalanceService;
 import io.freesale.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ import reactor.core.publisher.Mono;
 public class UserController {
 
   private final UserService userService;
+  private final BalanceService balanceService;
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
@@ -41,9 +43,10 @@ public class UserController {
   @GetMapping("/me")
   public Mono<UserDto> getMe(Mono<Authentication> authentication) {
     return authentication
-        .map(auth -> (SecurityUser) auth.getPrincipal())
-        .map(securityUser -> new UserDto(securityUser.getUser().getId(),
-            securityUser.getUser().getPhone()));
+        .map(auth -> ((SecurityUser) auth.getPrincipal()).getUser())
+        .flatMap(user -> balanceService
+            .calculateBalance(user.getId())
+            .map(balance -> new UserDto(user.getId(), user.getPhone(), balance)));
   }
 
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
