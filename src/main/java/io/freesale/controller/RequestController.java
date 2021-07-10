@@ -11,6 +11,8 @@ import io.freesale.security.SecurityUser;
 import io.freesale.service.RequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.codec.multipart.Part;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +46,13 @@ public class RequestController {
   public Mono<RequestDto> makeOffer(@PathVariable String requestId,
       @RequestBody Mono<MakeOfferDto> makeOfferDto, Authentication authentication) {
     return requestService.makeOffer(requestId, makeOfferDto,
+        ((SecurityUser) authentication.getPrincipal()).getUser().getId());
+  }
+
+  @PutMapping(path = "/{requestId}/offers/{offerId}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public Mono<RequestDto> uploadOfferImages(@PathVariable String requestId,
+      @PathVariable String offerId, @RequestBody Flux<Part> parts, Authentication authentication) {
+    return requestService.uploadOfferImages(requestId, offerId, parts,
         ((SecurityUser) authentication.getPrincipal()).getUser().getId());
   }
 

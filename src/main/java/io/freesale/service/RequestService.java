@@ -15,6 +15,7 @@ import io.freesale.repository.RequestRepository;
 import io.freesale.repository.TransactionRepository;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.codec.multipart.Part;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -26,6 +27,7 @@ public class RequestService {
   private final RequestRepository requestRepository;
   private final OfferRepository offerRepository;
   private final TransactionRepository transactionRepository;
+  private final UploadService uploadService;
 
   public Mono<RequestDto> makeRequest(Mono<MakeRequestDto> makeRequestDto, String userId) {
     return makeRequestDto
@@ -59,6 +61,40 @@ public class RequestService {
             .flatMapMany(offer -> offerRepository.findByRequestId(requestId))
             .collectList()
             .map(offers -> RequestDto
+                .builder()
+                .id(requestId)
+                .title(request.getTitle())
+                .offers(offers)
+                .userId(request.getUserId())
+                .build()));
+  }
+
+  public Mono<RequestDto> uploadOfferImages(String requestId, String offerId, Flux<Part> parts,
+      String userId) {
+    return offerRepository
+        .findById(offerId)
+        .switchIfEmpty(Mono.error(OfferNotFoundException::new))
+        .handle((offer, sink) -> {
+          if (!offer.getUserId().equals(userId)) {
+            sink.error(new IllegalActionException("This offer belongs to another user"));
+          } else {
+            sink.next(offer);
+          }
+        })
+        .cast(Offer.class)
+        .flatMap(offer -> uploadService
+            .upload(parts)
+            .collectList()
+            .map(keys -> {
+              offer.getImages().addAll(keys);
+              return offer;
+            })
+            .flatMap(offerRepository::save))
+        .flatMapMany(offer -> offerRepository.findByRequestId(requestId))
+        .collectList()
+        .flatMap(offers -> requestRepository
+            .findById(requestId)
+            .map(request -> RequestDto
                 .builder()
                 .id(requestId)
                 .title(request.getTitle())
